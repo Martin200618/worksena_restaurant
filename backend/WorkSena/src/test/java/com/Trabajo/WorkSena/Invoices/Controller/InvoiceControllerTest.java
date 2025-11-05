@@ -52,7 +52,6 @@ class InvoiceControllerTest {
     @Test
     void getInvoiceById_ShouldReturnInvoice() throws Exception {
         InvoiceDto invoice = new InvoiceDto();
-        invoice.setId(1L);
         when(invoiceService.getInvoiceById(1L)).thenReturn(java.util.Optional.of(invoice));
 
         mockMvc.perform(get("/api/invoices/1"))

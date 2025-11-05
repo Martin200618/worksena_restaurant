@@ -1,22 +1,28 @@
 package com.Trabajo.WorkSena.Tables.DTO;
 
-import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "DTO para representar una mesa en el restaurante")
 public class TableDto {
-    private Long id;
+    @Schema(description = "Número de la mesa", example = "T001")
     private String tableNumber;
+
+    @Schema(description = "Capacidad de la mesa", example = "4")
     private Integer capacity;
+
+    @Schema(description = "Estado de la mesa", example = "AVAILABLE", allowableValues = {"AVAILABLE", "OCCUPIED", "RESERVED", "MAINTENANCE", "OUT_OF_SERVICE"})
     private String status;
+
+    @Schema(description = "Ubicación de la mesa", example = "Patio")
     private String location;
+
+    @Schema(description = "Descripción de la mesa", example = "Mesa cerca de la ventana")
     private String description;
+
+    @Schema(description = "Indica si la mesa está activa", example = "true")
     private Boolean isActive;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getTableNumber() { return tableNumber; }
     public void setTableNumber(String tableNumber) { this.tableNumber = tableNumber; }
 
@@ -34,10 +40,4 @@ public class TableDto {
 
     public Boolean getIsActive() { return isActive; }
     public void setIsActive(Boolean isActive) { this.isActive = isActive; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

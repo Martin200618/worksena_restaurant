@@ -53,7 +53,6 @@ class InventoryControllerTest {
     @Test
     void getInventoryItemById_ShouldReturnItem() throws Exception {
         InventoryDto item = new InventoryDto();
-        item.setId(1L);
         when(inventoryService.getInventoryItemById(1L)).thenReturn(Optional.of(item));
 
         mockMvc.perform(get("/api/inventory/1"))
@@ -87,9 +86,9 @@ class InventoryControllerTest {
 
     @Test
     void createInventoryItem_ShouldReturnCreatedItem() throws Exception {
-        InventoryItem item = new InventoryItem();
+        InventoryDto item = new InventoryDto();
         InventoryDto createdItem = new InventoryDto();
-        when(inventoryService.createInventoryItem(any(InventoryItem.class))).thenReturn(createdItem);
+        when(inventoryService.createInventoryItem(any(InventoryDto.class))).thenReturn(createdItem);
 
         mockMvc.perform(post("/api/inventory")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -97,25 +96,25 @@ class InventoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(inventoryService, times(1)).createInventoryItem(any(InventoryItem.class));
+        verify(inventoryService, times(1)).createInventoryItem(any(InventoryDto.class));
     }
 
     @Test
     void createInventoryItem_ShouldReturnBadRequest() throws Exception {
-        when(inventoryService.createInventoryItem(any(InventoryItem.class))).thenThrow(new RuntimeException());
+        when(inventoryService.createInventoryItem(any(InventoryDto.class))).thenThrow(new RuntimeException());
 
         mockMvc.perform(post("/api/inventory")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("{}"))
                 .andExpect(status().isBadRequest());
 
-        verify(inventoryService, times(1)).createInventoryItem(any(InventoryItem.class));
+        verify(inventoryService, times(1)).createInventoryItem(any(InventoryDto.class));
     }
 
     @Test
     void updateInventoryItem_ShouldReturnUpdatedItem() throws Exception {
         InventoryDto updatedItem = new InventoryDto();
-        when(inventoryService.updateInventoryItem(eq(1L), any(InventoryItem.class))).thenReturn(updatedItem);
+        when(inventoryService.updateInventoryItem(eq(1L), any(InventoryDto.class))).thenReturn(updatedItem);
 
         mockMvc.perform(put("/api/inventory/1")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -123,7 +122,7 @@ class InventoryControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
-        verify(inventoryService, times(1)).updateInventoryItem(eq(1L), any(InventoryItem.class));
+        verify(inventoryService, times(1)).updateInventoryItem(eq(1L), any(InventoryDto.class));
     }
 
     @Test

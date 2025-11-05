@@ -51,7 +51,6 @@ class TableControllerTest {
     @Test
     void getTableById_ShouldReturnTable() throws Exception {
         TableDto table = new TableDto();
-        table.setId(1L);
         when(tableService.getTableById(1L)).thenReturn(java.util.Optional.of(table));
 
         mockMvc.perform(get("/api/tables/1"))

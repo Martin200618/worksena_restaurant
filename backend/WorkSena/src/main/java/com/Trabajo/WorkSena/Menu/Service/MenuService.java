@@ -3,6 +3,7 @@ package com.Trabajo.WorkSena.Menu.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.Trabajo.WorkSena.Menu.DTO.CategoryDto;
 import com.Trabajo.WorkSena.Menu.DTO.MenuItemDto;
 import com.Trabajo.WorkSena.Menu.Entity.Category;
 import com.Trabajo.WorkSena.Menu.Entity.MenuItem;
@@ -66,25 +67,29 @@ public class MenuService implements IMenuService {
     }
 
     @Override
-    public List<Category> getAllCategories() {
-        return categoryRepository.findAll();
+    public List<CategoryDto> getAllCategories() {
+        return categoryRepository.findAll().stream()
+            .map(this::convertCategoryToDto)
+            .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<Category> getCategoryById(Long id) {
-        return categoryRepository.findById(id);
+    public Optional<CategoryDto> getCategoryById(Long id) {
+        return categoryRepository.findById(id)
+            .map(this::convertCategoryToDto);
     }
 
     @Override
-    public Category createCategory(Category category) {
+    public CategoryDto createCategory(Category category) {
         if (categoryRepository.existsByName(category.getName())) {
             throw new RuntimeException("Category name already exists");
         }
-        return categoryRepository.save(category);
+        Category savedCategory = categoryRepository.save(category);
+        return convertCategoryToDto(savedCategory);
     }
 
     @Override
-    public Category updateCategory(Long id, Category categoryDetails) {
+    public CategoryDto updateCategory(Long id, Category categoryDetails) {
         Category category = categoryRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Category not found"));
 
@@ -94,7 +99,8 @@ public class MenuService implements IMenuService {
         category.setIsActive(categoryDetails.getIsActive());
         category.setDisplayOrder(categoryDetails.getDisplayOrder());
 
-        return categoryRepository.save(category);
+        Category updatedCategory = categoryRepository.save(category);
+        return convertCategoryToDto(updatedCategory);
     }
 
     @Override
@@ -127,7 +133,6 @@ public class MenuService implements IMenuService {
 
     private MenuItemDto convertToDto(MenuItem menuItem) {
         MenuItemDto dto = new MenuItemDto();
-        dto.setId(menuItem.getId());
         dto.setName(menuItem.getName());
         dto.setDescription(menuItem.getDescription());
         dto.setPrice(menuItem.getPrice());
@@ -138,6 +143,16 @@ public class MenuService implements IMenuService {
             dto.setCategoryId(menuItem.getCategory().getId());
             dto.setCategoryName(menuItem.getCategory().getName());
         }
+        return dto;
+    }
+
+    private CategoryDto convertCategoryToDto(Category category) {
+        CategoryDto dto = new CategoryDto();
+        dto.setName(category.getName());
+        dto.setDescription(category.getDescription());
+        dto.setImageUrl(category.getImageUrl());
+        dto.setIsActive(category.getIsActive());
+        dto.setDisplayOrder(category.getDisplayOrder());
         return dto;
     }
 }

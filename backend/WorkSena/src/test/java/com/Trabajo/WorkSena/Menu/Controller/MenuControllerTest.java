@@ -1,5 +1,6 @@
 package com.Trabajo.WorkSena.Menu.Controller;
 
+import com.Trabajo.WorkSena.Menu.DTO.CategoryDto;
 import com.Trabajo.WorkSena.Menu.DTO.MenuItemDto;
 import com.Trabajo.WorkSena.Menu.Entity.Category;
 import com.Trabajo.WorkSena.Menu.Entity.MenuItem;
@@ -52,7 +53,6 @@ class MenuControllerTest {
     @Test
     void getMenuItemById_ShouldReturnItem() throws Exception {
         MenuItemDto item = new MenuItemDto();
-        item.setId(1L);
         when(menuService.getMenuItemById(1L)).thenReturn(java.util.Optional.of(item));
 
         mockMvc.perform(get("/api/menu/items/1"))
@@ -146,7 +146,7 @@ class MenuControllerTest {
 
     @Test
     void getAllCategories_ShouldReturnList() throws Exception {
-        List<Category> categories = Arrays.asList(new Category(), new Category());
+        List<CategoryDto> categories = Arrays.asList(new CategoryDto(), new CategoryDto());
         when(menuService.getAllCategories()).thenReturn(categories);
 
         mockMvc.perform(get("/api/menu/categories"))
@@ -158,8 +158,7 @@ class MenuControllerTest {
 
     @Test
     void getCategoryById_ShouldReturnCategory() throws Exception {
-        Category category = new Category();
-        category.setId(1L);
+        CategoryDto category = new CategoryDto();
         when(menuService.getCategoryById(1L)).thenReturn(java.util.Optional.of(category));
 
         mockMvc.perform(get("/api/menu/categories/1"))
@@ -181,7 +180,7 @@ class MenuControllerTest {
 
     @Test
     void createCategory_ShouldReturnCreatedCategory() throws Exception {
-        Category createdCategory = new Category();
+        CategoryDto createdCategory = new CategoryDto();
         when(menuService.createCategory(any(Category.class))).thenReturn(createdCategory);
 
         mockMvc.perform(post("/api/menu/categories")
@@ -207,7 +206,7 @@ class MenuControllerTest {
 
     @Test
     void updateCategory_ShouldReturnUpdatedCategory() throws Exception {
-        Category updatedCategory = new Category();
+        CategoryDto updatedCategory = new CategoryDto();
         when(menuService.updateCategory(eq(1L), any(Category.class))).thenReturn(updatedCategory);
 
         mockMvc.perform(put("/api/menu/categories/1")

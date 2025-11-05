@@ -1,33 +1,50 @@
 package com.Trabajo.WorkSena.Inventory.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
 
+@Schema(description = "DTO para representar un item del inventario")
 public class InventoryDto {
-    private Long id;
+    @Schema(description = "Nombre del item", example = "Tomates", required = true)
     private String name;
+
+    @Schema(description = "Descripción del item", example = "Tomates frescos para ensaladas")
     private String description;
+
+    @Schema(description = "Código SKU del item", example = "TOM-001", required = true)
     private String sku;
+
+    @Schema(description = "Categoría del item", example = "Vegetales")
     private String category;
+
+    @Schema(description = "Unidad de medida", example = "kg")
     private String unit;
+
+    @Schema(description = "Stock actual", example = "50.0", required = true)
     private BigDecimal currentStock;
+
+    @Schema(description = "Stock mínimo", example = "10.0")
     private BigDecimal minimumStock;
+
+    @Schema(description = "Stock máximo", example = "100.0")
     private BigDecimal maximumStock;
+
+    @Schema(description = "Costo unitario", example = "2000.0")
     private BigDecimal unitCost;
+
+    @Schema(description = "ID del proveedor", example = "1")
     private Long supplierId;
+
+    @Schema(description = "Ubicación del item", example = "Refrigerador A")
     private String location;
+
+    @Schema(description = "Estado del item", example = "AVAILABLE", allowableValues = {"AVAILABLE", "LOW_STOCK", "OUT_OF_STOCK", "DISCONTINUED"})
     private String status;
+
+    @Schema(description = "Indica si el item está activo", example = "true")
     private Boolean isActive;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Boolean isLowStock;
-    private Boolean isOutOfStock;
-    private Boolean needsRestock;
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -66,19 +83,4 @@ public class InventoryDto {
 
     public Boolean getIsActive() { return isActive; }
     public void setIsActive(Boolean isActive) { this.isActive = isActive; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
-
-    public Boolean getIsLowStock() { return isLowStock; }
-    public void setIsLowStock(Boolean isLowStock) { this.isLowStock = isLowStock; }
-
-    public Boolean getIsOutOfStock() { return isOutOfStock; }
-    public void setIsOutOfStock(Boolean isOutOfStock) { this.isOutOfStock = isOutOfStock; }
-
-    public Boolean getNeedsRestock() { return needsRestock; }
-    public void setNeedsRestock(Boolean needsRestock) { this.needsRestock = needsRestock; }
 }

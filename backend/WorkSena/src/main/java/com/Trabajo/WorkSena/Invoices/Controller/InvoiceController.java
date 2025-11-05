@@ -1,5 +1,12 @@
 package com.Trabajo.WorkSena.Invoices.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import com.Trabajo.WorkSena.Invoices.DTO.InvoiceDto;
 import com.Trabajo.WorkSena.Invoices.Service.IInvoiceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/invoices")
 @CrossOrigin(origins = "*")
+@Tag(name = "Invoices", description = "API para gestión de facturas del restaurante")
 public class InvoiceController {
 
     @Autowired
@@ -45,6 +53,13 @@ public class InvoiceController {
     }
 
     @PostMapping("/generate/{orderId}")
+    @Operation(summary = "Generar factura desde una orden", description = "Crea una nueva factura basada en una orden existente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Factura generada exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = InvoiceDto.class))),
+        @ApiResponse(responseCode = "400", description = "Error al generar la factura",
+            content = @Content)
+    })
     public ResponseEntity<InvoiceDto> generateInvoiceFromOrder(@PathVariable Long orderId) {
         try {
             InvoiceDto invoice = invoiceService.createInvoiceFromOrder(orderId);

@@ -1,32 +1,55 @@
 package com.Trabajo.WorkSena.Invoices.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Schema(description = "DTO para representar una factura en el restaurante")
 public class InvoiceDto {
-    private Long id;
+    @Schema(description = "Número de la factura", example = "INV-001", required = true)
     private String invoiceNumber;
+
+    @Schema(description = "ID de la orden asociada", example = "1", required = true)
     private Long orderId;
+
+    @Schema(description = "Nombre del cliente", example = "Juan Pérez")
     private String customerName;
+
+    @Schema(description = "Teléfono del cliente", example = "+57 300 123 4567")
     private String customerPhone;
+
+    @Schema(description = "Número de mesa", example = "5")
     private Integer tableNumber;
+
+    @Schema(description = "Subtotal de la factura", example = "30000.0")
     private BigDecimal subtotal;
+
+    @Schema(description = "Tasa de impuesto", example = "0.19")
     private BigDecimal taxRate;
+
+    @Schema(description = "Monto del impuesto", example = "5700.0")
     private BigDecimal taxAmount;
+
+    @Schema(description = "Monto total de la factura", example = "35700.0")
     private BigDecimal totalAmount;
+
+    @Schema(description = "Estado de la factura", example = "PENDING", allowableValues = {"PENDING", "PAID", "CANCELLED", "OVERDUE"})
     private String status;
+
+    @Schema(description = "Fecha de emisión", example = "2023-10-01T12:00:00")
     private LocalDateTime issuedAt;
+
+    @Schema(description = "Fecha de vencimiento", example = "2023-10-01T23:59:59")
     private LocalDateTime dueDate;
+
+    @Schema(description = "Notas adicionales", example = "Factura generada automáticamente")
     private String notes;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+
+    @Schema(description = "Lista de items de la factura")
     private List<InvoiceItemDto> items;
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getInvoiceNumber() { return invoiceNumber; }
     public void setInvoiceNumber(String invoiceNumber) { this.invoiceNumber = invoiceNumber; }
 
@@ -65,12 +88,6 @@ public class InvoiceDto {
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 
     public List<InvoiceItemDto> getItems() { return items; }
     public void setItems(List<InvoiceItemDto> items) { this.items = items; }

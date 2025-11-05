@@ -10,8 +10,8 @@ import com.Trabajo.WorkSena.Inventory.Entity.InventoryItem;
 public interface IInventoryService {
     List<InventoryDto> getAllInventoryItems();
     Optional<InventoryDto> getInventoryItemById(Long id);
-    InventoryDto createInventoryItem(InventoryItem item);
-    InventoryDto updateInventoryItem(Long id, InventoryItem itemDetails);
+    InventoryDto createInventoryItem(InventoryDto item);
+    InventoryDto updateInventoryItem(Long id, InventoryDto itemDetails);
     void deleteInventoryItem(Long id);
 
     // Stock management

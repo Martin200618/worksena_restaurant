@@ -1,5 +1,12 @@
 package com.Trabajo.WorkSena.Tables.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/tables")
 @CrossOrigin(origins = "*")
+@Tag(name = "Tables", description = "API para gestión de mesas del restaurante")
 public class TableController {
 
     @Autowired
@@ -39,6 +47,13 @@ public class TableController {
     }
 
     @PostMapping
+    @Operation(summary = "Crear una nueva mesa", description = "Crea una nueva mesa en el restaurante con la información proporcionada")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Mesa creada exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = TableDto.class))),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos o mesa ya existe",
+            content = @Content)
+    })
     public ResponseEntity<TableDto> createTable(@RequestBody TableDto tableDto) {
         System.out.println("=== CREATE TABLE REQUEST RECEIVED ===");
         System.out.println("TableDto received: " + tableDto);
@@ -89,7 +104,7 @@ public class TableController {
 
             System.out.println("Calling tableService.createTable...");
             TableDto createdTable = tableService.createTable(table);
-            System.out.println("SUCCESS: Table created with ID: " + createdTable.getId());
+            System.out.println("SUCCESS: Table created with number: " + createdTable.getTableNumber());
             return ResponseEntity.ok(createdTable);
 
         } catch (Exception e) {
@@ -100,9 +115,32 @@ public class TableController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TableDto> updateTable(@PathVariable Long id, @RequestBody DiningTable tableDetails) {
+    @Operation(summary = "Actualizar una mesa", description = "Actualiza la información de una mesa existente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Mesa actualizada exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = TableDto.class))),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos",
+            content = @Content)
+    })
+    public ResponseEntity<TableDto> updateTable(@PathVariable Long id, @RequestBody TableDto tableDto) {
         try {
-            TableDto updatedTable = tableService.updateTable(id, tableDetails);
+            // Convertir DTO a entidad
+            DiningTable table = new DiningTable();
+            table.setTableNumber(tableDto.getTableNumber());
+            table.setCapacity(tableDto.getCapacity());
+            table.setLocation(tableDto.getLocation());
+            table.setDescription(tableDto.getDescription());
+            table.setIsActive(tableDto.getIsActive());
+
+            // Convertir status string a enum
+            try {
+                DiningTable.TableStatus statusEnum = DiningTable.TableStatus.valueOf(tableDto.getStatus().toUpperCase().trim());
+                table.setStatus(statusEnum);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            TableDto updatedTable = tableService.updateTable(id, table);
             return ResponseEntity.ok(updatedTable);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

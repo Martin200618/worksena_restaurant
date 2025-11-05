@@ -32,7 +32,8 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public InventoryDto createInventoryItem(InventoryItem item) {
+    public InventoryDto createInventoryItem(InventoryDto itemDto) {
+        InventoryItem item = convertToEntity(itemDto);
         if (inventoryRepository.existsBySku(item.getSku())) {
             throw new RuntimeException("SKU already exists");
         }
@@ -41,7 +42,7 @@ public class InventoryService implements IInventoryService {
     }
 
     @Override
-    public InventoryDto updateInventoryItem(Long id, InventoryItem itemDetails) {
+    public InventoryDto updateInventoryItem(Long id, InventoryDto itemDetails) {
         InventoryItem item = inventoryRepository.findById(id)
             .orElseThrow(() -> new RuntimeException("Inventory item not found"));
 
@@ -203,7 +204,6 @@ public class InventoryService implements IInventoryService {
 
     private InventoryDto convertToDto(InventoryItem item) {
         InventoryDto dto = new InventoryDto();
-        dto.setId(item.getId());
         dto.setName(item.getName());
         dto.setDescription(item.getDescription());
         dto.setSku(item.getSku());
@@ -217,11 +217,26 @@ public class InventoryService implements IInventoryService {
         dto.setLocation(item.getLocation());
         dto.setStatus(item.getStatus().toString());
         dto.setIsActive(item.getIsActive());
-        dto.setCreatedAt(item.getCreatedAt());
-        dto.setUpdatedAt(item.getUpdatedAt());
-        dto.setIsLowStock(item.isLowStock());
-        dto.setIsOutOfStock(item.isOutOfStock());
-        dto.setNeedsRestock(item.needsRestock());
         return dto;
+    }
+
+    private InventoryItem convertToEntity(InventoryDto dto) {
+        InventoryItem item = new InventoryItem();
+        item.setName(dto.getName());
+        item.setDescription(dto.getDescription());
+        item.setSku(dto.getSku());
+        item.setCategory(dto.getCategory());
+        item.setUnit(dto.getUnit());
+        item.setCurrentStock(dto.getCurrentStock());
+        item.setMinimumStock(dto.getMinimumStock());
+        item.setMaximumStock(dto.getMaximumStock());
+        item.setUnitCost(dto.getUnitCost());
+        item.setSupplierId(dto.getSupplierId());
+        item.setLocation(dto.getLocation());
+        if (dto.getStatus() != null) {
+            item.setStatus(InventoryItem.InventoryStatus.valueOf(dto.getStatus()));
+        }
+        item.setIsActive(dto.getIsActive());
+        return item;
     }
 }

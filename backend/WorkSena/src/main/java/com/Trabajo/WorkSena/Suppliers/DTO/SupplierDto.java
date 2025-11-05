@@ -1,29 +1,49 @@
 package com.Trabajo.WorkSena.Suppliers.DTO;
 
-import java.time.LocalDateTime;
+import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "DTO para representar un proveedor en el restaurante")
 public class SupplierDto {
-    private Long id;
+    @Schema(description = "Nombre del proveedor", example = "Proveedor ABC")
     private String name;
+
+    @Schema(description = "Persona de contacto", example = "Juan Pérez")
     private String contactPerson;
+
+    @Schema(description = "Teléfono de contacto", example = "+57 300 123 4567")
     private String phone;
+
+    @Schema(description = "Correo electrónico", example = "contacto@proveedorabc.com")
     private String email;
+
+    @Schema(description = "Dirección", example = "Calle 123 #45-67")
     private String address;
+
+    @Schema(description = "Ciudad", example = "Bogotá")
     private String city;
+
+    @Schema(description = "País", example = "Colombia")
     private String country;
+
+    @Schema(description = "ID fiscal", example = "901234567-8")
     private String taxId;
+
+    @Schema(description = "Términos de pago", example = "Net 30")
     private String paymentTerms;
+
+    @Schema(description = "Categoría del proveedor", example = "Food")
     private String supplierCategory;
+
+    @Schema(description = "Indica si el proveedor está activo", example = "true")
     private Boolean isActive;
+
+    @Schema(description = "Calificación del proveedor (1-5)", example = "4")
     private Integer rating;
+
+    @Schema(description = "Notas adicionales", example = "Proveedor confiable de alimentos frescos")
     private String notes;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
@@ -62,10 +82,4 @@ public class SupplierDto {
 
     public String getNotes() { return notes; }
     public void setNotes(String notes) { this.notes = notes; }
-
-    public LocalDateTime getCreatedAt() { return createdAt; }
-    public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
-
-    public LocalDateTime getUpdatedAt() { return updatedAt; }
-    public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }

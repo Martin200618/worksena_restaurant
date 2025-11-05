@@ -136,7 +136,6 @@ public class OrderService implements IOrderService {
 
     private OrderDto convertToDto(Order order) {
         OrderDto dto = new OrderDto();
-        dto.setId(order.getId());
         dto.setOrderNumber(order.getOrderNumber());
         dto.setTableId(order.getTableId());
         dto.setCustomerName(order.getCustomerName());
@@ -144,8 +143,6 @@ public class OrderService implements IOrderService {
         dto.setStatus(order.getStatus().toString());
         dto.setTotalAmount(order.getTotalAmount());
         dto.setNotes(order.getNotes());
-        dto.setCreatedAt(order.getCreatedAt());
-        dto.setUpdatedAt(order.getUpdatedAt());
 
         if (order.getOrderMenuItems() != null) {
             List<OrderItemDto> items = order.getOrderMenuItems().stream()
@@ -159,7 +156,6 @@ public class OrderService implements IOrderService {
 
     private OrderItemDto convertOrderItemToDto(OrderMenuItem item) {
         OrderItemDto dto = new OrderItemDto();
-        dto.setId(item.getId());
         dto.setMenuItemId(item.getMenuItemId());
         dto.setMenuItemName(item.getMenuItemName());
         dto.setQuantity(item.getQuantity());

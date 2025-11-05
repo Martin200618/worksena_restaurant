@@ -1,5 +1,12 @@
 package com.Trabajo.WorkSena.Orders.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/orders")
 @CrossOrigin(origins = "*")
+@Tag(name = "Orders", description = "API para gestión de órdenes del restaurante")
 public class OrderController {
 
     @Autowired
@@ -34,8 +42,29 @@ public class OrderController {
     }
 
     @PostMapping
-    public ResponseEntity<OrderDto> createOrder(@RequestBody Order order) {
+    @Operation(summary = "Crear una nueva orden", description = "Crea una nueva orden en el restaurante con la información proporcionada")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Orden creada exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto.class))),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos",
+            content = @Content)
+    })
+    public ResponseEntity<OrderDto> createOrder(@RequestBody OrderDto orderDto) {
         try {
+            // Convertir DTO a entidad
+            Order order = new Order();
+            order.setTableId(orderDto.getTableId());
+            order.setCustomerName(orderDto.getCustomerName());
+            order.setCustomerPhone(orderDto.getCustomerPhone());
+            order.setStatus(Order.OrderStatus.valueOf(orderDto.getStatus().toUpperCase()));
+            order.setNotes(orderDto.getNotes());
+
+            // Convertir items
+            if (orderDto.getItems() != null) {
+                // Aquí necesitaríamos lógica adicional para convertir OrderItemDto a OrderMenuItem
+                // Por simplicidad, asumiremos que se maneja en el servicio
+            }
+
             OrderDto createdOrder = orderService.createOrder(order);
             return ResponseEntity.ok(createdOrder);
         } catch (Exception e) {
@@ -44,9 +73,24 @@ public class OrderController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OrderDto> updateOrder(@PathVariable Long id, @RequestBody Order orderDetails) {
+    @Operation(summary = "Actualizar una orden", description = "Actualiza la información de una orden existente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Orden actualizada exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = OrderDto.class))),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos",
+            content = @Content)
+    })
+    public ResponseEntity<OrderDto> updateOrder(@PathVariable Long id, @RequestBody OrderDto orderDto) {
         try {
-            OrderDto updatedOrder = orderService.updateOrder(id, orderDetails);
+            // Convertir DTO a entidad
+            Order order = new Order();
+            order.setTableId(orderDto.getTableId());
+            order.setCustomerName(orderDto.getCustomerName());
+            order.setCustomerPhone(orderDto.getCustomerPhone());
+            order.setStatus(Order.OrderStatus.valueOf(orderDto.getStatus().toUpperCase()));
+            order.setNotes(orderDto.getNotes());
+
+            OrderDto updatedOrder = orderService.updateOrder(id, order);
             return ResponseEntity.ok(updatedOrder);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

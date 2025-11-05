@@ -68,15 +68,12 @@ public class InvoiceService implements IInvoiceService {
 
         // Convert OrderDto to Order entity (simplified approach)
         Order order = new Order();
-        order.setId(orderDto.getId());
         order.setOrderNumber(orderDto.getOrderNumber());
         order.setTableId(orderDto.getTableId());
         order.setCustomerName(orderDto.getCustomerName());
         order.setCustomerPhone(orderDto.getCustomerPhone());
         order.setTotalAmount(orderDto.getTotalAmount());
         order.setNotes(orderDto.getNotes());
-        order.setCreatedAt(orderDto.getCreatedAt());
-        order.setUpdatedAt(orderDto.getUpdatedAt());
 
         // Check if invoice already exists for this order
         List<Invoice> existingInvoices = invoiceRepository.findByOrderId(orderId);
@@ -163,7 +160,6 @@ public class InvoiceService implements IInvoiceService {
 
     private InvoiceDto convertToDto(Invoice invoice) {
         InvoiceDto dto = new InvoiceDto();
-        dto.setId(invoice.getId());
         dto.setInvoiceNumber(invoice.getInvoiceNumber());
         dto.setOrderId(invoice.getOrderId());
         dto.setCustomerName(invoice.getCustomerName());
@@ -177,8 +173,6 @@ public class InvoiceService implements IInvoiceService {
         dto.setIssuedAt(invoice.getIssuedAt());
         dto.setDueDate(invoice.getDueDate());
         dto.setNotes(invoice.getNotes());
-        dto.setCreatedAt(invoice.getCreatedAt());
-        dto.setUpdatedAt(invoice.getUpdatedAt());
 
         // Load invoice items
         List<InvoiceItem> items = invoiceItemRepository.findByInvoiceId(invoice.getId());

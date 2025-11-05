@@ -1,22 +1,35 @@
 package com.Trabajo.WorkSena.Menu.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 
+@Schema(description = "DTO para representar un item del menú")
 public class MenuItemDto {
-    private Long id;
+    @Schema(description = "Nombre del item del menú", example = "Hamburguesa Clásica", required = true)
     private String name;
+
+    @Schema(description = "Descripción del item", example = "Hamburguesa con carne de res, lechuga, tomate y queso")
     private String description;
+
+    @Schema(description = "Precio del item", example = "15000.00", required = true)
     private BigDecimal price;
+
+    @Schema(description = "URL de la imagen del item", example = "https://example.com/hamburguesa.jpg")
     private String imageUrl;
+
+    @Schema(description = "Indica si el item está disponible", example = "true")
     private Boolean isAvailable;
+
+    @Schema(description = "Tiempo de preparación en minutos", example = "15")
     private Integer preparationTime;
+
+    @Schema(description = "ID de la categoría", example = "1", required = true)
     private Long categoryId;
+
+    @Schema(description = "Nombre de la categoría", example = "Hamburguesas")
     private String categoryName;
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 

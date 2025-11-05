@@ -1,5 +1,12 @@
 package com.Trabajo.WorkSena.Suppliers.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,6 +20,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/suppliers")
 @CrossOrigin(origins = "*")
+@Tag(name = "Suppliers", description = "API para gestión de proveedores del restaurante")
 public class SupplierController {
 
     @Autowired
@@ -39,8 +47,31 @@ public class SupplierController {
     }
 
     @PostMapping
-    public ResponseEntity<SupplierDto> createSupplier(@RequestBody Supplier supplier) {
+    @Operation(summary = "Crear un nuevo proveedor", description = "Crea un nuevo proveedor en el restaurante con la información proporcionada")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Proveedor creado exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = SupplierDto.class))),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos o proveedor ya existe",
+            content = @Content)
+    })
+    public ResponseEntity<SupplierDto> createSupplier(@RequestBody SupplierDto supplierDto) {
         try {
+            // Convertir DTO a entidad
+            Supplier supplier = new Supplier();
+            supplier.setName(supplierDto.getName());
+            supplier.setContactPerson(supplierDto.getContactPerson());
+            supplier.setPhone(supplierDto.getPhone());
+            supplier.setEmail(supplierDto.getEmail());
+            supplier.setAddress(supplierDto.getAddress());
+            supplier.setCity(supplierDto.getCity());
+            supplier.setCountry(supplierDto.getCountry());
+            supplier.setTaxId(supplierDto.getTaxId());
+            supplier.setPaymentTerms(supplierDto.getPaymentTerms());
+            supplier.setSupplierCategory(supplierDto.getSupplierCategory());
+            supplier.setIsActive(supplierDto.getIsActive() != null ? supplierDto.getIsActive() : true);
+            supplier.setRating(supplierDto.getRating());
+            supplier.setNotes(supplierDto.getNotes());
+
             SupplierDto createdSupplier = supplierService.createSupplier(supplier);
             return ResponseEntity.ok(createdSupplier);
         } catch (Exception e) {
@@ -49,9 +80,32 @@ public class SupplierController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<SupplierDto> updateSupplier(@PathVariable Long id, @RequestBody Supplier supplierDetails) {
+    @Operation(summary = "Actualizar un proveedor", description = "Actualiza la información de un proveedor existente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Proveedor actualizado exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = SupplierDto.class))),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos",
+            content = @Content)
+    })
+    public ResponseEntity<SupplierDto> updateSupplier(@PathVariable Long id, @RequestBody SupplierDto supplierDto) {
         try {
-            SupplierDto updatedSupplier = supplierService.updateSupplier(id, supplierDetails);
+            // Convertir DTO a entidad
+            Supplier supplier = new Supplier();
+            supplier.setName(supplierDto.getName());
+            supplier.setContactPerson(supplierDto.getContactPerson());
+            supplier.setPhone(supplierDto.getPhone());
+            supplier.setEmail(supplierDto.getEmail());
+            supplier.setAddress(supplierDto.getAddress());
+            supplier.setCity(supplierDto.getCity());
+            supplier.setCountry(supplierDto.getCountry());
+            supplier.setTaxId(supplierDto.getTaxId());
+            supplier.setPaymentTerms(supplierDto.getPaymentTerms());
+            supplier.setSupplierCategory(supplierDto.getSupplierCategory());
+            supplier.setIsActive(supplierDto.getIsActive());
+            supplier.setRating(supplierDto.getRating());
+            supplier.setNotes(supplierDto.getNotes());
+
+            SupplierDto updatedSupplier = supplierService.updateSupplier(id, supplier);
             return ResponseEntity.ok(updatedSupplier);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();

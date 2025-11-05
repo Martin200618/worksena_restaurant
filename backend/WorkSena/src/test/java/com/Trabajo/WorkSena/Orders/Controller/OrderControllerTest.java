@@ -52,7 +52,6 @@ class OrderControllerTest {
     @Test
     void getOrderById_ShouldReturnOrder() throws Exception {
         OrderDto order = new OrderDto();
-        order.setId(1L);
         when(orderService.getOrderById(1L)).thenReturn(java.util.Optional.of(order));
 
         mockMvc.perform(get("/api/orders/1"))

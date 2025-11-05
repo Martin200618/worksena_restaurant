@@ -156,7 +156,6 @@ public class SupplierService implements ISupplierService {
 
     private SupplierDto convertToDto(Supplier supplier) {
         SupplierDto dto = new SupplierDto();
-        dto.setId(supplier.getId());
         dto.setName(supplier.getName());
         dto.setContactPerson(supplier.getContactPerson());
         dto.setPhone(supplier.getPhone());
@@ -170,8 +169,6 @@ public class SupplierService implements ISupplierService {
         dto.setIsActive(supplier.getIsActive());
         dto.setRating(supplier.getRating());
         dto.setNotes(supplier.getNotes());
-        dto.setCreatedAt(supplier.getCreatedAt());
-        dto.setUpdatedAt(supplier.getUpdatedAt());
         return dto;
     }
 }

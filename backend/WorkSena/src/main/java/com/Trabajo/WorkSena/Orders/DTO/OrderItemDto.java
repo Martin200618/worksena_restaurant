@@ -1,20 +1,29 @@
 package com.Trabajo.WorkSena.Orders.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.math.BigDecimal;
 
+@Schema(description = "DTO para representar un item de una orden")
 public class OrderItemDto {
-    private Long id;
+    @Schema(description = "ID del item del menú", example = "1", required = true)
     private Long menuItemId;
+
+    @Schema(description = "Nombre del item del menú", example = "Hamburguesa Clásica")
     private String menuItemName;
+
+    @Schema(description = "Cantidad", example = "2", required = true)
     private Integer quantity;
+
+    @Schema(description = "Precio unitario", example = "15000.00")
     private BigDecimal unitPrice;
+
+    @Schema(description = "Precio total", example = "30000.00")
     private BigDecimal totalPrice;
+
+    @Schema(description = "Notas del item", example = "Sin cebolla")
     private String notes;
 
     // Getters and Setters
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public Long getMenuItemId() { return menuItemId; }
     public void setMenuItemId(Long menuItemId) { this.menuItemId = menuItemId; }
 

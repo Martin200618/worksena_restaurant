@@ -1,5 +1,12 @@
 package com.Trabajo.WorkSena.Inventory.Controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +21,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/inventory")
 @CrossOrigin(origins = "*")
+@Tag(name = "Inventory", description = "API para gestión del inventario del restaurante")
 public class InventoryController {
 
     @Autowired
@@ -40,9 +48,16 @@ public class InventoryController {
     }
 
     @PostMapping
-    public ResponseEntity<InventoryDto> createInventoryItem(@RequestBody InventoryItem item) {
+    @Operation(summary = "Crear un nuevo item del inventario", description = "Crea un nuevo item del inventario con la información proporcionada")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Item del inventario creado exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = InventoryDto.class))),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos o SKU ya existe",
+            content = @Content)
+    })
+    public ResponseEntity<InventoryDto> createInventoryItem(@RequestBody InventoryDto itemDto) {
         try {
-            InventoryDto createdItem = inventoryService.createInventoryItem(item);
+            InventoryDto createdItem = inventoryService.createInventoryItem(itemDto);
             return ResponseEntity.ok(createdItem);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
@@ -50,7 +65,14 @@ public class InventoryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<InventoryDto> updateInventoryItem(@PathVariable Long id, @RequestBody InventoryItem itemDetails) {
+    @Operation(summary = "Actualizar un item del inventario", description = "Actualiza la información de un item del inventario existente")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Item del inventario actualizado exitosamente",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = InventoryDto.class))),
+        @ApiResponse(responseCode = "400", description = "Datos inválidos",
+            content = @Content)
+    })
+    public ResponseEntity<InventoryDto> updateInventoryItem(@PathVariable Long id, @RequestBody InventoryDto itemDetails) {
         try {
             InventoryDto updatedItem = inventoryService.updateInventoryItem(id, itemDetails);
             return ResponseEntity.ok(updatedItem);

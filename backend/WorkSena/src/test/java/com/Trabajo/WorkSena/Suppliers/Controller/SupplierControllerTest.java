@@ -51,7 +51,6 @@ class SupplierControllerTest {
     @Test
     void getSupplierById_ShouldReturnSupplier() throws Exception {
         SupplierDto supplier = new SupplierDto();
-        supplier.setId(1L);
         when(supplierService.getSupplierById(1L)).thenReturn(java.util.Optional.of(supplier));
 
         mockMvc.perform(get("/api/suppliers/1"))

@@ -133,15 +133,12 @@ public class TableService implements ITableService {
 
     private TableDto convertToDto(DiningTable table) {
         TableDto dto = new TableDto();
-        dto.setId(table.getId());
         dto.setTableNumber(table.getTableNumber());
         dto.setCapacity(table.getCapacity());
         dto.setStatus(table.getStatus().toString());
         dto.setLocation(table.getLocation());
         dto.setDescription(table.getDescription());
         dto.setIsActive(table.getIsActive());
-        dto.setCreatedAt(table.getCreatedAt());
-        dto.setUpdatedAt(table.getUpdatedAt());
         return dto;
     }
 }
